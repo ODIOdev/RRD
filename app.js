@@ -430,3 +430,22 @@ if("serviceWorker" in navigator){ navigator.serviceWorker.register("service-work
 
 renderServiceOptions();
 renderAll();
+
+(function initPreloader(){
+  const el = document.getElementById("preloader");
+  if(!el) return;
+  const started = Date.now();
+  const minMs = 700;
+
+  const hide = () => {
+    const wait = Math.max(0, minMs - (Date.now() - started));
+    setTimeout(() => {
+      el.classList.add("is-done");
+      el.setAttribute("aria-busy", "false");
+      setTimeout(() => el.remove(), 500);
+    }, wait);
+  };
+
+  if(document.readyState === "complete") hide();
+  else window.addEventListener("load", hide, {once:true});
+})();
