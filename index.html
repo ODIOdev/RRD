@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0c0e" />
+  <title>RR AutoDetailing Reservas</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="assets/rr-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+  <header class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-media"></div>
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <img src="assets/rr-logo.png" alt="RR AutoDetailing" class="brand-logo" />
+      <div class="hero-copy">
+        <p class="eyebrow">RR AutoDetailing</p>
+        <h1>Tu vehículo limpio,<br><span>a tu hora.</span></h1>
+        <p class="hero-details">
+          Detailing profesional en Santiago · Reserva en minutos
+        </p>
+        <div class="hero-actions">
+          <button class="primary hero-reserve" data-tab-target="booking" type="button">Reservar ahora</button>
+          <a class="whatsapp-link" href="https://wa.me/18097761110" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.5 14.4c-.3-.1-1.6-.8-1.8-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.5-1-1-1.5-2-1.7-2.3-.2-.3 0-.4.1-.6l.5-.6c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.2.8 3 .7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.2-1.3C8.6 21.5 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.2 15.1 3.8 13.6 3.8 12 3.8 7.5 7.5 3.8 12 3.8S20.2 7.5 20.2 12 16.5 20.2 12 20.2z"/></svg>
+            WhatsApp
+          </a>
+          <button id="installBtn" class="secondary hidden" type="button">Instalar app</button>
+        </div>
+        <p class="hero-contact">809-776-1110 · Marginal Sur #10, Autopista Duarte</p>
+      </div>
+    </div>
+
+    <nav class="tabs" aria-label="Secciones">
+    <div class="tabs-track">
+      <button data-tab="booking" class="active" type="button">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7V3m8 4V3M4 11h16M6 5h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Reservar</span>
+      </button>
+      <button data-tab="reservations" type="button">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Reservas</span>
+      </button>
+      <button data-tab="vehicles" type="button">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5M5 17h.01M19 17h.01M4 13h16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Vehículos</span>
+      </button>
+      <button data-tab="admin" type="button">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zM19.4 15a7.8 7.8 0 0 0 .1-1l1.7-1.3-1.6-2.8-2 .5a7.4 7.4 0 0 0-1.7-1l-.3-2H9.4l-.3 2a7.4 7.4 0 0 0-1.7 1l-2-.5-1.6 2.8L5.5 14a7.8 7.8 0 0 0 .1 1l-1.7 1.3 1.6 2.8 2-.5a7.4 7.4 0 0 0 1.7 1l.3 2h5.2l.3-2a7.4 7.4 0 0 0 1.7-1l2 .5 1.6-2.8L19.4 15z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Admin</span>
+      </button>
+    </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="booking" class="panel active">
+      <div class="card">
+        <header class="panel-intro">
+          <div>
+            <p class="panel-kicker">Paso a paso</p>
+            <h2>Nueva reserva</h2>
+            <p class="panel-lead">Completa los datos del cliente, vehículo y servicio. El total se calcula al instante.</p>
+          </div>
+        </header>
+
+        <form id="bookingForm">
+          <fieldset class="form-section">
+            <legend>Cliente</legend>
+            <div class="grid">
+              <label>Nombre del cliente
+                <input id="clientName" required placeholder="Nombre completo" autocomplete="name" />
+              </label>
+              <label>Teléfono
+                <input id="clientPhone" required placeholder="809-000-0000" inputmode="tel" autocomplete="tel" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Vehículo</legend>
+            <div class="grid">
+              <label>Tipo
+                <select id="vehicleType" required>
+                  <option value="Carro">Carro</option>
+                  <option value="Jeepeta">Jeepeta</option>
+                  <option value="Camioneta">Camioneta</option>
+                  <option value="Vehículo grande">Vehículo grande</option>
+                </select>
+              </label>
+              <label>Marca y modelo
+                <input id="vehicleModel" required placeholder="Toyota Corolla" />
+              </label>
+              <label>Año
+                <input id="vehicleYear" type="number" min="1980" max="2035" placeholder="2020" />
+              </label>
+              <label>Placa
+                <input id="vehiclePlate" placeholder="A000000" />
+              </label>
+              <label>Color
+                <input id="vehicleColor" placeholder="Negro" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Servicio y horario</legend>
+            <div class="grid">
+              <label>Servicio
+                <select id="serviceSelect" required></select>
+              </label>
+              <label>Lavador
+                <select id="washerSelect" required></select>
+              </label>
+              <label>Fecha
+                <input id="bookingDate" type="date" required />
+              </label>
+              <label>Hora
+                <input id="bookingTime" type="time" required />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Pago y propina</legend>
+            <div class="grid">
+              <label>Forma de pago
+                <select id="paymentMethod" required>
+                  <option value="Efectivo">Efectivo</option>
+                  <option value="Tarjeta">Tarjeta (+18%)</option>
+                  <option value="Transferencia">Transferencia</option>
+                  <option value="Reserva sin pago">Reserva sin pago</option>
+                </select>
+              </label>
+              <label>Propina
+                <select id="tipSelect">
+                  <option value="0">Sin propina</option>
+                  <option value="100">RD$100</option>
+                  <option value="200">RD$200</option>
+                  <option value="500">RD$500</option>
+                  <option value="custom">Otro monto</option>
+                </select>
+              </label>
+              <label id="customTipWrap" class="hidden">Otro monto
+                <input id="customTip" type="number" min="0" step="50" value="0" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section form-section--notes">
+            <legend>Notas</legend>
+            <label class="sr-only" for="bookingNotes">Instrucciones especiales</label>
+            <textarea id="bookingNotes" rows="3" placeholder="Instrucciones especiales para el equipo"></textarea>
+          </fieldset>
+
+          <div id="summary" class="summary"></div>
+
+          <div class="form-footer">
+            <p class="meta">Horario: lun–sáb 9:00–23:00 · domingo 9:00–17:00</p>
+            <button type="submit" class="primary btn-lg">Confirmar reserva</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="reservations" class="panel">
+      <div class="card">
+        <header class="panel-intro section-header">
+          <div>
+            <p class="panel-kicker">Agenda</p>
+            <h2>Reservas</h2>
+            <p class="panel-lead">Gestiona el estado de cada cita desde aquí.</p>
+          </div>
+          <button id="clearDemo" class="danger" type="button">Borrar datos locales</button>
+        </header>
+        <div id="reservationsList" class="list"></div>
+      </div>
+    </section>
+
+    <section id="vehicles" class="panel">
+      <div class="card">
+        <header class="panel-intro">
+          <div>
+            <p class="panel-kicker">Flota</p>
+            <h2>Vehículos registrados</h2>
+            <p class="panel-lead">Historial de vehículos asociados a reservas en este dispositivo.</p>
+          </div>
+        </header>
+        <div id="vehiclesList" class="list list--vehicles"></div>
+      </div>
+    </section>
+
+    <section id="admin" class="panel">
+      <div class="card">
+        <header class="panel-intro">
+          <div>
+            <p class="panel-kicker">Negocio</p>
+            <h2>Panel administrativo</h2>
+            <p class="panel-lead">Resumen del día, catálogo de servicios y enlace para clientes.</p>
+          </div>
+        </header>
+
+        <div class="stats" id="stats"></div>
+
+        <section class="admin-block">
+          <h3>Agregar servicio</h3>
+          <form id="serviceForm" class="grid admin-form">
+            <label>Nombre
+              <input id="newServiceName" required placeholder="Ej. Lavado premium" />
+            </label>
+            <label>Precio regular
+              <input id="newServiceRegular" type="number" min="0" required placeholder="0" />
+            </label>
+            <label>Precio después de 6 p. m.
+              <input id="newServiceLate" type="number" min="0" required placeholder="0" />
+            </label>
+            <label>Duración (minutos)
+              <input id="newServiceDuration" type="number" min="5" required placeholder="45" />
+            </label>
+            <label class="checkbox">
+              <input id="newServiceSpecialist" type="checkbox" />
+              <span>Requiere brillador/pulidor</span>
+            </label>
+            <div class="admin-form-action">
+              <button type="submit" class="primary">Agregar servicio</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-block">
+          <h3>Enlace para clientes</h3>
+          <div class="link-config">
+            <label>Enlace público de reservas
+              <input id="publicBookingLink" type="url" placeholder="https://reservas.rrautodetailing.com" />
+            </label>
+            <div class="actions">
+              <button id="savePublicLink" type="button" class="primary">Guardar enlace</button>
+              <button id="copyPublicLink" type="button" class="ghost">Copiar enlace</button>
+              <button id="openPublicLink" type="button" class="ghost">Abrir enlace</button>
+            </div>
+            <p class="meta">Cuando la app esté publicada, escribe aquí la dirección web que enviarás por WhatsApp, Instagram o mensaje de texto.</p>
+          </div>
+        </section>
+
+        <section class="admin-block">
+          <h3>Servicios activos</h3>
+          <div id="servicesAdminList" class="list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="serviceEditModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="editServiceTitle">
+    <div class="modal-card">
+      <div class="section-header">
+        <h2 id="editServiceTitle">Editar servicio</h2>
+        <button id="closeServiceModal" type="button" class="ghost">Cerrar</button>
+      </div>
+      <form id="editServiceForm" class="grid">
+        <input id="editServiceId" type="hidden" />
+        <label>Nombre
+          <input id="editServiceName" required />
+        </label>
+        <label>Precio regular
+          <input id="editServiceRegular" type="number" min="0" required />
+        </label>
+        <label>Precio después de 6 p. m.
+          <input id="editServiceLate" type="number" min="0" required />
+        </label>
+        <label>Duración (minutos)
+          <input id="editServiceDuration" type="number" min="5" required />
+        </label>
+        <label class="checkbox">
+          <input id="editServiceSpecialist" type="checkbox" />
+          <span>Requiere brillador/pulidor</span>
+        </label>
+        <button type="submit" class="primary btn-lg">Guardar cambios</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="brand-footer">
+    <img src="assets/rr-logo.png" alt="RR AutoDetailing" />
+    <div class="footer-copy">
+      <p class="footer-brand">RR AutoDetailing</p>
+      <p>Marginal Sur #10, Autopista Duarte, Santiago</p>
+      <a href="tel:8097761110">809-776-1110</a>
+    </div>
+  </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

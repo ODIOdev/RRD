@@ -1,0 +1,16 @@
+{
+  "name": "RR AutoDetailing Reservas",
+  "short_name": "RR AutoDetailing",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#090b0d",
+  "theme_color": "#f36b13",
+  "icons": [
+    {
+      "src": "assets/rr-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
