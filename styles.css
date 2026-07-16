@@ -470,6 +470,21 @@ img{max-width:100%;display:block}
   justify-content:flex-end;
   align-items:center;
 }
+.panel-actions--compact{
+  gap:18px;
+  flex-wrap:nowrap;
+}
+.panel-actions--compact .sheet-btn{
+  padding:7px 12px !important;
+  border-radius:9px !important;
+  font-size:.78rem !important;
+  font-weight:700 !important;
+  box-shadow:none;
+  line-height:1.2;
+}
+.panel-actions--compact .primary.sheet-btn{
+  box-shadow:0 4px 12px rgba(243,107,19,.22);
+}
 
 /* —— Data bins panel —— */
 .data-bins-head{

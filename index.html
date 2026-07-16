@@ -385,14 +385,11 @@
 
     <section id="budget" class="panel">
       <div class="card">
-        <header class="panel-intro panel-intro--split">
+        <header class="panel-intro">
           <div>
             <p class="panel-kicker" data-i18n="budget.kicker">Finanzas</p>
             <h2 data-i18n="budget.title">Presupuesto y analítica</h2>
             <p class="panel-lead" data-i18n="budget.lead">Ingresos, lavados pasados, reportes y tendencias del negocio.</p>
-          </div>
-          <div class="panel-actions">
-            <button type="button" class="primary" id="budgetExportBtn" data-i18n="budget.export">Exportar reporte CSV</button>
           </div>
         </header>
 
@@ -439,8 +436,9 @@
             <h2 data-i18n="databins.title">Data bins</h2>
             <p class="panel-lead" data-i18n="databins.lead">Base de datos interna del negocio. Todo lo que se ingresa queda guardado en bins locales.</p>
           </div>
-          <div class="panel-actions">
-            <button id="clearDemo" class="danger" type="button" data-i18n="reservations.clear">Borrar datos locales</button>
+          <div class="panel-actions panel-actions--compact">
+            <button type="button" class="primary sheet-btn" id="budgetExportBtn" data-i18n="budget.export">Exportar reporte CSV</button>
+            <button id="clearDemo" class="danger sheet-btn" type="button" data-i18n="reservations.clear">Borrar datos locales</button>
           </div>
         </header>
         <div id="adminDataBinsRoot"></div>
