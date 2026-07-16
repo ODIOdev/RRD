@@ -93,13 +93,19 @@ function renderServiceOptions(){
 function renderWasherOptions(){
   const s = currentService();
   const eligible = WASHERS.filter(w => !s?.specialist || w.specialist);
-  $("washerSelect").innerHTML = `<option value="Cualquier lavador disponible">Cualquier lavador disponible</option>` +
+  $("washerSelect").innerHTML =
+    `<option value="" disabled selected>Elije Lavador</option>` +
+    `<option value="Aleatorio +">Aleatorio +</option>` +
     eligible.map(w => `<option value="${w.name}">${w.name}${w.specialist ? " · Brillador" : ""}</option>`).join("");
+}
+
+function isFlexibleWasher(washer){
+  return washer === "Aleatorio +" || washer === "Cualquier lavador disponible";
 }
 
 function overlaps(r, date, time, duration, washer){
   if(r.date !== date || r.status === "Cancelado") return false;
-  if(washer === "Cualquier lavador disponible" || r.washer === "Cualquier lavador disponible") return false;
+  if(isFlexibleWasher(washer) || isFlexibleWasher(r.washer)) return false;
   if(r.washer !== washer) return false;
   const toMin = t => {const [h,m]=t.split(":").map(Number); return h*60+m};
   const start = toMin(time), end = start + duration;
@@ -251,23 +257,19 @@ function renderAll(){
 }
 
 
+function switchTab(target){
+  if(!target || !$(target)) return;
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  $(target).classList.add("active");
+  document.querySelectorAll(".dash-nav button").forEach(b => {
+    b.classList.toggle("active", b.dataset.tabTarget === target);
+  });
+}
+
 document.querySelectorAll("[data-tab-target]").forEach(btn => {
   btn.addEventListener("click", () => {
-    const target = btn.dataset.tabTarget;
-    const tabButton = document.querySelector(`.tabs button[data-tab="${target}"]`);
-    if(tabButton){
-      tabButton.click();
-      document.querySelector("main").scrollIntoView({behavior:"smooth"});
-    }
-  });
-});
-
-document.querySelectorAll(".tabs button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
-    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
-    btn.classList.add("active");
-    $(btn.dataset.tab).classList.add("active");
+    switchTab(btn.dataset.tabTarget);
+    document.querySelector("main").scrollIntoView({behavior:"smooth"});
   });
 });
 
@@ -426,26 +428,43 @@ $("installBtn").addEventListener("click", async () => {
   $("installBtn").classList.add("hidden");
 });
 
-if("serviceWorker" in navigator){ navigator.serviceWorker.register("service-worker.js"); }
+if("serviceWorker" in navigator){
+  const isLocal = ["localhost","127.0.0.1"].includes(location.hostname);
+  if(isLocal){
+    // Dev: never cache — always show latest files from live-server
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(reg => reg.unregister());
+    });
+    if(window.caches){
+      caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+    }
+  }else{
+    navigator.serviceWorker.register("service-worker.js");
+  }
+}
 
 renderServiceOptions();
 renderAll();
 
-(function initPreloader(){
-  const el = document.getElementById("preloader");
-  if(!el) return;
-  const started = Date.now();
-  const minMs = 700;
-
-  const hide = () => {
-    const wait = Math.max(0, minMs - (Date.now() - started));
-    setTimeout(() => {
-      el.classList.add("is-done");
-      el.setAttribute("aria-busy", "false");
-      setTimeout(() => el.remove(), 500);
-    }, wait);
-  };
-
-  if(document.readyState === "complete") hide();
-  else window.addEventListener("load", hide, {once:true});
+(function fillVehicleYears(){
+  const sel = $("vehicleYear");
+  if(!sel) return;
+  const max = Math.max(2035, new Date().getFullYear() + 1);
+  let html = `<option value="">Elije año</option>`;
+  for(let y = max; y >= 1980; y--){
+    html += `<option value="${y}"${y === 2020 ? " selected" : ""}>${y}</option>`;
+  }
+  sel.innerHTML = html;
 })();
+
+document.querySelectorAll("select.select-scroll").forEach(sel => {
+  const rows = Number(sel.dataset.visible) || 10;
+  const collapse = () => { sel.size = 1; };
+  sel.addEventListener("focus", () => {
+    sel.size = rows;
+    const opt = sel.options[sel.selectedIndex];
+    if(opt) requestAnimationFrame(() => opt.scrollIntoView({block:"nearest"}));
+  });
+  sel.addEventListener("change", () => { collapse(); sel.blur(); });
+  sel.addEventListener("blur", collapse);
+});

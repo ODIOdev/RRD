@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0a0c0e" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>RR AutoDetailing Reservas</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" href="assets/rr-logo.png" />
@@ -15,12 +18,47 @@
 <body>
   <div id="preloader" class="preloader" aria-live="polite" aria-busy="true">
     <div class="preloader-inner">
-      <img src="assets/rr-logo.png" alt="" class="preloader-logo" />
+      <img src="assets/rr-logo.png" alt="" class="preloader-logo" width="180" height="140" decoding="async" />
       <p class="preloader-brand">RR AutoDetailing</p>
       <div class="preloader-bar" aria-hidden="true"><span></span></div>
-      <p class="preloader-text">Cargando…</p>
+      <p class="preloader-text" data-i18n="preloader.loading">Cargando…</p>
     </div>
   </div>
+  <script>
+    (function () {
+      var el = document.getElementById("preloader");
+      if (!el) return;
+      var done = false;
+      var started = Date.now();
+      try {
+        var lang = localStorage.getItem("rr_lang");
+        if (lang === "en") {
+          var t = el.querySelector(".preloader-text");
+          if (t) t.textContent = "Loading…";
+        }
+      } catch (e) {}
+      function hide() {
+        if (done) return;
+        done = true;
+        var wait = Math.max(0, 500 - (Date.now() - started));
+        setTimeout(function () {
+          el.classList.add("is-done");
+          el.setAttribute("aria-busy", "false");
+          setTimeout(function () {
+            if (el && el.parentNode) el.parentNode.removeChild(el);
+          }, 450);
+        }, wait);
+      }
+      if (document.readyState === "complete") hide();
+      else {
+        window.addEventListener("load", hide, { once: true });
+        document.addEventListener("DOMContentLoaded", function () {
+          setTimeout(hide, 1200);
+        }, { once: true });
+      }
+      setTimeout(hide, 2500);
+    })();
+  </script>
 
   <div class="app-shell">
   <header class="hero">
@@ -28,153 +66,205 @@
       <div class="hero-media"></div>
       <div class="hero-overlay"></div>
     </div>
+    <button type="button" class="lang-toggle lang-toggle--public" data-lang-toggle="1" aria-label="English" title="English">EN</button>
     <div class="hero-content">
       <img src="assets/rr-logo.png" alt="RR AutoDetailing" class="brand-logo" />
       <div class="hero-copy">
         <p class="eyebrow">RR AutoDetailing</p>
-        <h1>Tu vehículo limpio,<br><span>a tu hora.</span></h1>
-        <p class="hero-details">
+        <h1 data-i18n-html="hero.title">Tu vehículo limpio,<br><span>a tu hora.</span></h1>
+        <p class="hero-details" data-i18n="hero.details">
           Detailing profesional en Santiago · Reserva en minutos
         </p>
         <div class="hero-actions">
-          <button class="primary hero-reserve" data-tab-target="booking" type="button">Reservar ahora</button>
+          <button class="primary hero-reserve" data-tab-target="booking" type="button" data-i18n="hero.reserve">Reservar ahora</button>
           <a class="whatsapp-link" href="https://wa.me/18097761110" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.5 14.4c-.3-.1-1.6-.8-1.8-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.5-1-1-1.5-2-1.7-2.3-.2-.3 0-.4.1-.6l.5-.6c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.2.8 3 .7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.2-1.3C8.6 21.5 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.2 15.1 3.8 13.6 3.8 12 3.8 7.5 7.5 3.8 12 3.8S20.2 7.5 20.2 12 16.5 20.2 12 20.2z"/></svg>
             WhatsApp
           </a>
-          <button id="installBtn" class="secondary hidden" type="button">Instalar app</button>
+          <button id="installBtn" class="secondary hidden" type="button" data-i18n="hero.install">Instalar app</button>
         </div>
         <p class="hero-contact">809-776-1110 · Marginal Sur #10, Autopista Duarte</p>
       </div>
     </div>
-
-    <nav class="tabs" aria-label="Secciones">
-    <div class="tabs-track">
-      <button data-tab="booking" class="active" type="button">
-        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7V3m8 4V3M4 11h16M6 5h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Reservar</span>
-      </button>
-      <button data-tab="reservations" type="button">
-        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Reservas</span>
-      </button>
-      <button data-tab="vehicles" type="button">
-        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5M5 17h.01M19 17h.01M4 13h16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Vehículos</span>
-      </button>
-      <button data-tab="admin" type="button">
-        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zM19.4 15a7.8 7.8 0 0 0 .1-1l1.7-1.3-1.6-2.8-2 .5a7.4 7.4 0 0 0-1.7-1l-.3-2H9.4l-.3 2a7.4 7.4 0 0 0-1.7 1l-2-.5-1.6 2.8L5.5 14a7.8 7.8 0 0 0 .1 1l-1.7 1.3 1.6 2.8 2-.5a7.4 7.4 0 0 0 1.7 1l.3 2h5.2l.3-2a7.4 7.4 0 0 0 1.7-1l2 .5 1.6-2.8L19.4 15z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Admin</span>
-      </button>
-    </div>
-    </nav>
   </header>
 
   <main>
+    <div class="admin-chrome" hidden>
+      <div class="admin-topbar">
+        <div>
+          <p class="panel-kicker" data-i18n="admin.dashboard">Dashboard</p>
+          <strong class="admin-topbar-title" data-i18n="admin.title">RR Admin</strong>
+        </div>
+        <div class="admin-topbar-actions">
+          <button type="button" class="lang-toggle lang-toggle--admin" data-lang-toggle="1" aria-label="English" title="English">EN</button>
+          <button type="button" class="ghost" id="adminLogoutBtn" data-i18n="login.logout">Cerrar sesión</button>
+          <button type="button" class="ghost" id="adminExitBtn" data-i18n="admin.exit">Volver al sitio</button>
+        </div>
+      </div>
+      <nav class="dash-nav" aria-label="Panel">
+        <button type="button" data-tab-target="admin">
+          <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h7v7H4zM13 5h7v4h-7zM13 11h7v8h-7zM4 14h7v5H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <span data-i18n="nav.summary">Resumen</span>
+        </button>
+        <button type="button" data-tab-target="budget">
+          <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M8 16v-5M12 16V8M16 16v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="nav.budget">Presupuesto</span>
+        </button>
+        <button type="button" data-tab-target="reservations">
+          <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="nav.reservations">Reservas</span>
+        </button>
+        <div class="dash-more">
+          <button type="button" class="dash-more-btn" id="dashMoreBtn" aria-haspopup="menu" aria-expanded="false">
+            <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h.01M12 12h.01M19 12h.01" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+            <span data-i18n="nav.more">Más</span>
+            <svg class="dash-more-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="dash-more-menu hidden" id="dashMoreMenu" role="menu">
+            <button type="button" role="menuitem" data-tab-target="vehicles">
+              <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5M5 17h.01M19 17h.01M4 13h16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span data-i18n="nav.vehicles">Vehículos</span>
+            </button>
+            <button type="button" role="menuitem" data-tab-target="databins">
+              <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span data-i18n="nav.data">Datos</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
+
     <section id="booking" class="panel active">
       <div class="card">
-        <header class="panel-intro">
+        <header class="panel-intro panel-intro--split">
           <div>
-            <p class="panel-kicker">Paso a paso</p>
-            <h2>Nueva reserva</h2>
-            <p class="panel-lead">Completa los datos del cliente, vehículo y servicio. El total se calcula al instante.</p>
+            <p class="panel-kicker" data-i18n="booking.kicker">Paso a paso</p>
+            <h2 data-i18n="booking.title">Nueva reserva</h2>
+            <p class="panel-lead" data-i18n="booking.lead">Completa los datos del cliente, vehículo y servicio. El total se calcula al instante.</p>
           </div>
+          <button type="button" class="admin-entry" data-enter-admin>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zM19.4 15a7.8 7.8 0 0 0 .1-1l1.7-1.3-1.6-2.8-2 .5a7.4 7.4 0 0 0-1.7-1l-.3-2H9.4l-.3 2a7.4 7.4 0 0 0-1.7 1l-2-.5-1.6 2.8L5.5 14a7.8 7.8 0 0 0 .1 1l-1.7 1.3 1.6 2.8 2-.5a7.4 7.4 0 0 0 1.7 1l.3 2h5.2l.3-2a7.4 7.4 0 0 0 1.7-1l2 .5 1.6-2.8L19.4 15z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span data-i18n="admin.entry">Admin</span>
+          </button>
         </header>
 
         <form id="bookingForm">
           <fieldset class="form-section">
-            <legend>Cliente</legend>
+            <legend data-i18n="booking.client">Cliente</legend>
             <div class="grid">
-              <label>Nombre del cliente
-                <input id="clientName" required placeholder="Nombre completo" autocomplete="name" />
+              <label>
+                <span data-i18n="booking.clientName">Nombre del cliente</span>
+                <input id="clientName" required data-i18n-placeholder="booking.clientNamePh" placeholder="Nombre completo" autocomplete="name" />
               </label>
-              <label>Teléfono
-                <input id="clientPhone" required placeholder="809-000-0000" inputmode="tel" autocomplete="tel" />
+              <label>
+                <span data-i18n="booking.phone">Teléfono</span>
+                <input id="clientPhone" required placeholder="809-000-0000" inputmode="tel" autocomplete="tel" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" data-i18n-title="booking.phoneTitle" title="Formato: 809-000-0000" />
               </label>
             </div>
           </fieldset>
 
           <fieldset class="form-section">
-            <legend>Vehículo</legend>
+            <legend data-i18n="booking.vehicle">Vehículo</legend>
             <div class="grid">
-              <label>Tipo
+              <label>
+                <span data-i18n="booking.type">Tipo</span>
                 <select id="vehicleType" required>
-                  <option value="Carro">Carro</option>
-                  <option value="Jeepeta">Jeepeta</option>
-                  <option value="Camioneta">Camioneta</option>
-                  <option value="Vehículo grande">Vehículo grande</option>
+                  <option value="Carro" data-i18n="type.car">Carro</option>
+                  <option value="Jeepeta" data-i18n="type.suv">Jeepeta</option>
+                  <option value="Camioneta" data-i18n="type.truck">Camioneta</option>
+                  <option value="Vehículo grande" data-i18n="type.large">Vehículo grande</option>
                 </select>
               </label>
-              <label>Marca y modelo
+              <label>
+                <span data-i18n="booking.model">Marca y modelo</span>
                 <input id="vehicleModel" required placeholder="Toyota Corolla" />
               </label>
-              <label>Año
-                <input id="vehicleYear" type="number" min="1980" max="2035" placeholder="2020" />
+              <label>
+                <span data-i18n="booking.year">Año</span>
+                <span class="select-scroll-wrap">
+                  <select id="vehicleYear" class="select-scroll" data-visible="10">
+                    <option value="">Elije año</option>
+                  </select>
+                </span>
               </label>
-              <label>Placa
+              <label>
+                <span data-i18n="booking.plate">Placa</span>
                 <input id="vehiclePlate" placeholder="A000000" />
               </label>
-              <label>Color
-                <input id="vehicleColor" placeholder="Negro" />
+              <label>
+                <span data-i18n="booking.color">Color</span>
+                <input id="vehicleColor" data-i18n-placeholder="booking.colorPh" placeholder="Negro" />
               </label>
             </div>
           </fieldset>
 
           <fieldset class="form-section">
-            <legend>Servicio y horario</legend>
+            <legend data-i18n="booking.serviceSchedule">Servicio y horario</legend>
             <div class="grid">
-              <label>Servicio
+              <label>
+                <span data-i18n="booking.service">Servicio</span>
                 <select id="serviceSelect" required></select>
               </label>
-              <label>Lavador
+              <label>
+                <span data-i18n="booking.washer">Lavador</span>
                 <select id="washerSelect" required></select>
               </label>
-              <label>Fecha
+            </div>
+            <div class="grid grid-2">
+              <label>
+                <span data-i18n="booking.date">Fecha</span>
                 <input id="bookingDate" type="date" required />
               </label>
-              <label>Hora
+              <label>
+                <span data-i18n="booking.time">Hora</span>
                 <input id="bookingTime" type="time" required />
               </label>
             </div>
           </fieldset>
 
           <fieldset class="form-section">
-            <legend>Pago y propina</legend>
+            <legend data-i18n="booking.paymentTip">Pago y propina</legend>
             <div class="grid">
-              <label>Forma de pago
+              <label>
+                <span data-i18n="booking.payment">Forma de pago</span>
                 <select id="paymentMethod" required>
-                  <option value="Efectivo">Efectivo</option>
-                  <option value="Tarjeta">Tarjeta (+18%)</option>
-                  <option value="Transferencia">Transferencia</option>
-                  <option value="Reserva sin pago">Reserva sin pago</option>
+                  <option value="Efectivo" data-i18n="pay.cash">Efectivo</option>
+                  <option value="Tarjeta" data-i18n="pay.card">Tarjeta (+18%)</option>
+                  <option value="Transferencia" data-i18n="pay.transfer">Transferencia</option>
+                  <option value="Reserva sin pago" data-i18n="pay.none">Reserva sin pago</option>
                 </select>
               </label>
-              <label>Propina
+              <label>
+                <span data-i18n="booking.tip">Propina</span>
                 <select id="tipSelect">
-                  <option value="0">Sin propina</option>
+                  <option value="0" data-i18n="booking.tipNone">Sin propina</option>
                   <option value="100">RD$100</option>
                   <option value="200">RD$200</option>
                   <option value="500">RD$500</option>
-                  <option value="custom">Otro monto</option>
+                  <option value="custom" data-i18n="booking.tipCustom">Otro monto</option>
                 </select>
               </label>
-              <label id="customTipWrap" class="hidden">Otro monto
-                <input id="customTip" type="number" min="0" step="50" value="0" />
+              <label id="customTipWrap" class="hidden">
+                <span data-i18n="booking.tipCustom">Otro monto</span>
+                <span class="money-input">
+                  <span class="money-prefix" aria-hidden="true">RD$</span>
+                  <input id="customTip" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="" />
+                </span>
               </label>
             </div>
           </fieldset>
 
           <fieldset class="form-section form-section--notes">
-            <legend>Notas</legend>
-            <label class="sr-only" for="bookingNotes">Instrucciones especiales</label>
-            <textarea id="bookingNotes" rows="3" placeholder="Instrucciones especiales para el equipo"></textarea>
+            <legend data-i18n="booking.notes">Notas</legend>
+            <label class="sr-only" for="bookingNotes" data-i18n="booking.notesLabel">Instrucciones especiales</label>
+            <textarea id="bookingNotes" rows="3" data-i18n-placeholder="booking.notesPh" placeholder="Instrucciones especiales para el equipo"></textarea>
           </fieldset>
 
           <div id="summary" class="summary"></div>
 
           <div class="form-footer">
-            <p class="meta">Horario: lun–sáb 9:00–23:00 · domingo 9:00–17:00</p>
-            <button type="submit" class="primary btn-lg">Confirmar reserva</button>
+            <p class="meta" data-i18n="booking.hours">Horario: lun–sáb 9:00–23:00 · domingo 9:00–17:00</p>
+            <button type="submit" class="primary btn-lg" data-i18n="booking.confirm">Confirmar reserva</button>
           </div>
         </form>
       </div>
@@ -182,15 +272,19 @@
 
     <section id="reservations" class="panel">
       <div class="card">
-        <header class="panel-intro section-header">
+        <header class="panel-intro panel-intro--split section-header">
           <div>
-            <p class="panel-kicker">Agenda</p>
-            <h2>Reservas</h2>
-            <p class="panel-lead">Gestiona el estado de cada cita desde aquí.</p>
+            <p class="panel-kicker" data-i18n="reservations.kicker">Agenda</p>
+            <h2 data-i18n="reservations.title">Reservas</h2>
+            <p class="panel-lead" data-i18n="reservations.lead">Gestiona el estado de cada cita desde aquí.</p>
           </div>
-          <button id="clearDemo" class="danger" type="button">Borrar datos locales</button>
         </header>
+        <div class="view-tabs" role="tablist" aria-label="Reservas">
+          <button type="button" class="view-tab active" data-reservations-view="list" data-i18n="reservations.viewList">Lista</button>
+          <button type="button" class="view-tab" data-reservations-view="calendar" data-i18n="reservations.viewCalendar">Calendario</button>
+        </div>
         <div id="reservationsList" class="list"></div>
+        <div id="reservationsCalendar" class="bookings-calendar hidden"></div>
       </div>
     </section>
 
@@ -198,9 +292,9 @@
       <div class="card">
         <header class="panel-intro">
           <div>
-            <p class="panel-kicker">Flota</p>
-            <h2>Vehículos registrados</h2>
-            <p class="panel-lead">Historial de vehículos asociados a reservas en este dispositivo.</p>
+            <p class="panel-kicker" data-i18n="vehicles.kicker">Flota</p>
+            <h2 data-i18n="vehicles.title">Vehículos registrados</h2>
+            <p class="panel-lead" data-i18n="vehicles.lead">Historial de vehículos asociados a reservas en este dispositivo.</p>
           </div>
         </header>
         <div id="vehiclesList" class="list list--vehicles"></div>
@@ -211,87 +305,379 @@
       <div class="card">
         <header class="panel-intro">
           <div>
-            <p class="panel-kicker">Negocio</p>
-            <h2>Panel administrativo</h2>
-            <p class="panel-lead">Resumen del día, catálogo de servicios y enlace para clientes.</p>
+            <p class="panel-kicker" data-i18n="admin.kicker">Negocio</p>
+            <h2 data-i18n="admin.pageTitle">Panel administrativo</h2>
+            <p class="panel-lead" data-i18n="admin.lead">Resumen del día, catálogo de servicios y enlace para clientes.</p>
           </div>
         </header>
 
+        <div id="washTracker" class="wash-tracker"></div>
         <div class="stats" id="stats"></div>
 
         <section class="admin-block">
-          <h3>Agregar servicio</h3>
+          <h3 data-i18n="admin.addService">Agregar servicio</h3>
           <form id="serviceForm" class="grid admin-form">
-            <label>Nombre
-              <input id="newServiceName" required placeholder="Ej. Lavado premium" />
+            <label>
+              <span data-i18n="admin.serviceName">Nombre</span>
+              <input id="newServiceName" required data-i18n-placeholder="admin.serviceNamePh" placeholder="Ej. Lavado premium" />
             </label>
-            <label>Precio regular
-              <input id="newServiceRegular" type="number" min="0" required placeholder="0" />
+            <label>
+              <span data-i18n="admin.regular">Precio regular</span>
+              <span class="money-input">
+                <span class="money-prefix" aria-hidden="true">RD$</span>
+                <input id="newServiceRegular" type="text" inputmode="numeric" autocomplete="off" required placeholder="0" />
+              </span>
             </label>
-            <label>Precio después de 6 p. m.
-              <input id="newServiceLate" type="number" min="0" required placeholder="0" />
+            <label>
+              <span data-i18n="admin.late">Precio después de 6 p. m.</span>
+              <span class="money-input">
+                <span class="money-prefix" aria-hidden="true">RD$</span>
+                <input id="newServiceLate" type="text" inputmode="numeric" autocomplete="off" required placeholder="0" />
+              </span>
             </label>
-            <label>Duración (minutos)
-              <input id="newServiceDuration" type="number" min="5" required placeholder="45" />
-            </label>
-            <label class="checkbox">
-              <input id="newServiceSpecialist" type="checkbox" />
-              <span>Requiere brillador/pulidor</span>
-            </label>
-            <div class="admin-form-action">
-              <button type="submit" class="primary">Agregar servicio</button>
+            <div class="admin-form-footer">
+              <div class="field-stack">
+                <label>
+                  <span data-i18n="admin.duration">Duración</span>
+                  <div class="duration-field">
+                    <input type="hidden" id="newServiceDuration" value="45" required />
+                    <button type="button" class="duration-trigger" id="newServiceDurationBtn" data-duration-for="newServiceDuration" aria-haspopup="dialog">
+                      <span class="duration-display" id="newServiceDurationLabel">0h 45m</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                  </div>
+                </label>
+                <label class="check-chip">
+                  <input id="newServiceSpecialist" type="checkbox" />
+                  <span class="check-chip-box" aria-hidden="true"></span>
+                  <span class="check-chip-text" data-i18n="admin.needsSpecialist">Requiere brillador/pulidor</span>
+                </label>
+              </div>
+              <div class="admin-form-action">
+                <button type="submit" class="primary" data-i18n="admin.addServiceBtn">Agregar servicio</button>
+              </div>
             </div>
           </form>
         </section>
 
         <section class="admin-block">
-          <h3>Enlace para clientes</h3>
+          <h3 data-i18n="admin.clientLink">Enlace para clientes</h3>
           <div class="link-config">
-            <label>Enlace público de reservas
+            <label>
+              <span data-i18n="admin.publicLink">Enlace público de reservas</span>
               <input id="publicBookingLink" type="url" placeholder="https://reservas.rrautodetailing.com" />
             </label>
             <div class="actions">
-              <button id="savePublicLink" type="button" class="primary">Guardar enlace</button>
-              <button id="copyPublicLink" type="button" class="ghost">Copiar enlace</button>
-              <button id="openPublicLink" type="button" class="ghost">Abrir enlace</button>
+              <button id="savePublicLink" type="button" class="primary" data-i18n="admin.saveLink">Guardar enlace</button>
+              <button id="copyPublicLink" type="button" class="ghost" data-i18n="admin.copyLink">Copiar enlace</button>
+              <button id="openPublicLink" type="button" class="ghost" data-i18n="admin.openLink">Abrir enlace</button>
             </div>
-            <p class="meta">Cuando la app esté publicada, escribe aquí la dirección web que enviarás por WhatsApp, Instagram o mensaje de texto.</p>
+            <p class="meta" data-i18n="admin.linkHelp">Cuando la app esté publicada, escribe aquí la dirección web que enviarás por WhatsApp, Instagram o mensaje de texto.</p>
           </div>
         </section>
 
         <section class="admin-block">
-          <h3>Servicios activos</h3>
-          <div id="servicesAdminList" class="list"></div>
+          <h3 data-i18n="admin.activeServices">Servicios activos</h3>
+          <div id="servicesAdminList" class="sheet-wrap"></div>
         </section>
+      </div>
+    </section>
+
+    <section id="budget" class="panel">
+      <div class="card">
+        <header class="panel-intro panel-intro--split">
+          <div>
+            <p class="panel-kicker" data-i18n="budget.kicker">Finanzas</p>
+            <h2 data-i18n="budget.title">Presupuesto y analítica</h2>
+            <p class="panel-lead" data-i18n="budget.lead">Ingresos, lavados pasados, reportes y tendencias del negocio.</p>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="primary" id="budgetExportBtn" data-i18n="budget.export">Exportar reporte CSV</button>
+          </div>
+        </header>
+
+        <div class="budget-filters" id="budgetFilters">
+          <button type="button" class="budget-filter" data-budget-range="today" data-i18n="budget.today">Hoy</button>
+          <button type="button" class="budget-filter" data-budget-range="7d" data-i18n="budget.week">7 días</button>
+          <button type="button" class="budget-filter active" data-budget-range="30d" data-i18n="budget.month">30 días</button>
+          <button type="button" class="budget-filter" data-budget-range="all" data-i18n="budget.all">Todo</button>
+        </div>
+
+        <div class="stats budget-stats" id="budgetStats"></div>
+
+        <div class="budget-grid">
+          <section class="budget-block">
+            <h3 data-i18n="budget.byDay">Ingresos por día</h3>
+            <div id="budgetChartDays" class="budget-bars"></div>
+          </section>
+          <section class="budget-block">
+            <h3 data-i18n="budget.byPayment">Por forma de pago</h3>
+            <div id="budgetChartPay" class="budget-bars"></div>
+          </section>
+          <section class="budget-block">
+            <h3 data-i18n="budget.byService">Top servicios</h3>
+            <div id="budgetChartService" class="budget-bars"></div>
+          </section>
+          <section class="budget-block">
+            <h3 data-i18n="budget.byWasher">Por lavador</h3>
+            <div id="budgetChartWasher" class="budget-bars"></div>
+          </section>
+        </div>
+
+        <section class="admin-block">
+          <h3 data-i18n="budget.pastWashes">Lavados pasados</h3>
+          <div id="budgetWashesList" class="sheet-wrap"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="databins" class="panel">
+      <div class="card">
+        <header class="panel-intro panel-intro--split section-header">
+          <div>
+            <p class="panel-kicker" data-i18n="databins.kicker">Storage</p>
+            <h2 data-i18n="databins.title">Data bins</h2>
+            <p class="panel-lead" data-i18n="databins.lead">Base de datos interna del negocio. Todo lo que se ingresa queda guardado en bins locales.</p>
+          </div>
+          <div class="panel-actions">
+            <button id="clearDemo" class="danger" type="button" data-i18n="reservations.clear">Borrar datos locales</button>
+          </div>
+        </header>
+        <div id="adminDataBinsRoot"></div>
       </div>
     </section>
   </main>
 
+  <div id="adminLogin" class="login-page hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="login-card">
+      <img src="assets/rr-logo.png" alt="RR AutoDetailing" class="login-logo" />
+      <p class="panel-kicker" data-i18n="login.kicker">Acceso restringido</p>
+      <h2 id="loginTitle" data-i18n="login.title">Entrar al dashboard</h2>
+      <p class="panel-lead" data-i18n="login.lead">Inicia sesión para gestionar reservas, servicios y datos.</p>
+      <form id="adminLoginForm" class="login-form">
+        <label>
+          <span data-i18n="login.user">Usuario</span>
+          <input id="adminLoginUser" name="username" autocomplete="username" required data-i18n-placeholder="login.userPh" placeholder="Usuario" />
+        </label>
+        <label>
+          <span data-i18n="login.pass">Contraseña</span>
+          <span class="password-field">
+            <input id="adminLoginPass" name="password" type="password" autocomplete="current-password" required data-i18n-placeholder="login.passPh" placeholder="Contraseña" />
+            <button type="button" class="password-toggle" id="adminPassToggle" aria-pressed="false" data-i18n-aria="login.showPass" aria-label="Mostrar contraseña">
+              <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+              <svg class="icon-eye-off hidden" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18M10.5 10.6a3 3 0 0 0 4.2 4.2M9.9 5.1A10.5 10.5 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.2 3.1M6.1 6.2A18.2 18.2 0 0 0 2 12s3.5 7 10 7c1.4 0 2.7-.3 3.9-.7"/></svg>
+            </button>
+          </span>
+        </label>
+        <label class="login-remember">
+          <input id="adminRememberMe" type="checkbox" />
+          <span class="login-remember-box" aria-hidden="true"></span>
+          <span class="login-remember-text" data-i18n="login.remember">Recordarme</span>
+        </label>
+        <p id="adminLoginError" class="login-error hidden" data-i18n="login.error" role="alert">Usuario o contraseña incorrectos.</p>
+        <div class="login-actions">
+          <button type="submit" class="primary btn-lg" data-i18n="login.submit">Entrar</button>
+          <button type="button" class="ghost" id="adminLoginCancel" data-i18n="login.cancel">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="washerModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="washerModalTitle">
+    <div class="modal-card washer-modal-card">
+      <div class="section-header">
+        <h2 id="washerModalTitle" data-i18n="washer.title">Lavadores</h2>
+        <button type="button" class="ghost" id="washerModalClose" data-i18n="modal.close">Cerrar</button>
+      </div>
+      <p class="panel-lead" data-i18n="washer.lead">Agrega lavadores al equipo. Los brilladores pueden tomar servicios especiales.</p>
+      <form id="washerForm" class="washer-form">
+        <input type="hidden" id="editWasherId" value="" />
+        <label>
+          <span data-i18n="washer.name">Nombre</span>
+          <input id="newWasherName" required data-i18n-placeholder="washer.namePh" placeholder="Nombre completo" autocomplete="name" />
+        </label>
+        <label class="check-chip">
+          <input id="newWasherSpecialist" type="checkbox" />
+          <span class="check-chip-box" aria-hidden="true"></span>
+          <span class="check-chip-text" data-i18n="washer.specialist">Es brillador / pulidor</span>
+        </label>
+        <div class="washer-form-actions">
+          <button type="submit" class="primary" id="washerFormSubmit" data-i18n="washer.add">Agregar lavador</button>
+          <button type="button" class="ghost hidden" id="washerFormCancelEdit" data-i18n="washer.cancelEdit">Cancelar edición</button>
+        </div>
+      </form>
+      <div id="washersModalList" class="washer-list"></div>
+    </div>
+  </div>
+
+  <div id="durationPicker" class="duration-picker hidden" role="dialog" aria-modal="true" aria-labelledby="durationPickerTitle">
+    <div class="duration-picker-card">
+      <div class="section-header">
+        <h2 id="durationPickerTitle" data-i18n="duration.title">Duración</h2>
+        <button type="button" class="ghost" id="durationPickerClose" data-i18n="modal.close">Cerrar</button>
+      </div>
+      <div class="duration-picker-cols">
+        <div class="duration-menu" data-duration-menu="hours">
+          <span class="duration-menu-label" data-i18n="duration.hours">Horas</span>
+          <button type="button" class="duration-menu-btn" id="durationHoursBtn" aria-haspopup="listbox" aria-expanded="false">
+            <span id="durationHoursValue">0</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="duration-menu-list hidden" id="durationHoursMenu" role="listbox"></div>
+          <input type="hidden" id="durationHours" value="0" />
+        </div>
+        <div class="duration-menu" data-duration-menu="minutes">
+          <span class="duration-menu-label" data-i18n="duration.minutes">Minutos</span>
+          <button type="button" class="duration-menu-btn" id="durationMinutesBtn" aria-haspopup="listbox" aria-expanded="false">
+            <span id="durationMinutesValue">00</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="duration-menu-list hidden" id="durationMinutesMenu" role="listbox"></div>
+          <input type="hidden" id="durationMinutes" value="0" />
+        </div>
+      </div>
+      <p class="meta duration-picker-preview" id="durationPickerPreview">0h 45m</p>
+      <div class="duration-picker-actions">
+        <button type="button" class="primary" id="durationPickerApply" data-i18n="duration.apply">Aplicar</button>
+        <button type="button" class="ghost" id="durationPickerCancel" data-i18n="login.cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="washDetailModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="washDetailTitle">
+    <div class="modal-card wash-detail-card">
+      <div class="section-header">
+        <div>
+          <p class="panel-kicker" data-i18n="budget.washDetailKicker">Lavado</p>
+          <h2 id="washDetailTitle">Detalle</h2>
+        </div>
+        <button type="button" class="ghost" id="washDetailClose" data-i18n="modal.close">Cerrar</button>
+      </div>
+      <div id="washDetailBody" class="wash-detail-body"></div>
+    </div>
+  </div>
+
+  <div id="bookingSuccessModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="bookingSuccessTitle">
+    <div class="modal-card booking-success-card">
+      <div class="booking-success-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="panel-kicker booking-success-kicker" data-i18n="booking.successKicker">Confirmado</p>
+      <h2 id="bookingSuccessTitle" data-i18n="booking.successTitle">¡Reserva confirmada!</h2>
+      <p id="bookingSuccessLead" class="booking-success-lead"></p>
+      <div id="bookingSuccessDetails" class="booking-success-details"></div>
+      <p id="bookingSuccessFee" class="booking-success-fee hidden"></p>
+      <button type="button" class="primary btn-lg" id="bookingSuccessClose" data-i18n="booking.successOk">Entendido</button>
+    </div>
+  </div>
+
+  <div id="confirmDialog" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirmDialogTitle">
+    <div class="modal-card confirm-dialog-card">
+      <div class="section-header">
+        <div>
+          <p class="panel-kicker confirm-dialog-kicker" data-i18n="confirm.warningKicker">Advertencia</p>
+          <h2 id="confirmDialogTitle">Confirmar acción</h2>
+        </div>
+        <button type="button" class="ghost" id="confirmDialogClose" data-i18n="modal.close">Cerrar</button>
+      </div>
+      <p id="confirmDialogMessage" class="confirm-dialog-message"></p>
+      <div class="confirm-dialog-actions">
+        <button type="button" class="danger" id="confirmDialogConfirm">Continuar</button>
+        <button type="button" class="ghost" id="confirmDialogCancel" data-i18n="login.cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="vehicleEditModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="vehicleEditTitle">
+    <div class="modal-card">
+      <div class="section-header">
+        <h2 id="vehicleEditTitle" data-i18n="vehicles.editTitle">Editar vehículo</h2>
+        <button type="button" class="ghost" id="vehicleEditClose" data-i18n="modal.close">Cerrar</button>
+      </div>
+      <form id="vehicleEditForm" class="grid">
+        <input type="hidden" id="editVehicleKey" value="" />
+        <label>
+          <span data-i18n="booking.type">Tipo</span>
+          <select id="editVehicleType" required>
+            <option value="Carro" data-i18n="type.car">Carro</option>
+            <option value="Jeepeta" data-i18n="type.suv">Jeepeta</option>
+            <option value="Camioneta" data-i18n="type.truck">Camioneta</option>
+            <option value="Vehículo grande" data-i18n="type.large">Vehículo grande</option>
+          </select>
+        </label>
+        <label>
+          <span data-i18n="booking.model">Marca y modelo</span>
+          <input id="editVehicleModel" required />
+        </label>
+        <label>
+          <span data-i18n="booking.year">Año</span>
+          <select id="editVehicleYear" class="select-scroll" data-visible="10"></select>
+        </label>
+        <label>
+          <span data-i18n="booking.plate">Placa</span>
+          <input id="editVehiclePlate" />
+        </label>
+        <label>
+          <span data-i18n="booking.color">Color</span>
+          <input id="editVehicleColor" />
+        </label>
+        <label>
+          <span data-i18n="booking.clientName">Nombre del cliente</span>
+          <input id="editVehicleClientName" required />
+        </label>
+        <label>
+          <span data-i18n="booking.phone">Teléfono</span>
+          <input id="editVehicleClientPhone" required />
+        </label>
+        <button type="submit" class="primary btn-lg" data-i18n="modal.save">Guardar cambios</button>
+      </form>
+    </div>
+  </div>
+
   <div id="serviceEditModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="editServiceTitle">
     <div class="modal-card">
       <div class="section-header">
-        <h2 id="editServiceTitle">Editar servicio</h2>
-        <button id="closeServiceModal" type="button" class="ghost">Cerrar</button>
+        <h2 id="editServiceTitle" data-i18n="modal.editService">Editar servicio</h2>
+        <button id="closeServiceModal" type="button" class="ghost" data-i18n="modal.close">Cerrar</button>
       </div>
       <form id="editServiceForm" class="grid">
         <input id="editServiceId" type="hidden" />
-        <label>Nombre
+        <label>
+          <span data-i18n="admin.serviceName">Nombre</span>
           <input id="editServiceName" required />
         </label>
-        <label>Precio regular
-          <input id="editServiceRegular" type="number" min="0" required />
+        <label>
+          <span data-i18n="admin.regular">Precio regular</span>
+          <span class="money-input">
+            <span class="money-prefix" aria-hidden="true">RD$</span>
+            <input id="editServiceRegular" type="text" inputmode="numeric" autocomplete="off" required />
+          </span>
         </label>
-        <label>Precio después de 6 p. m.
-          <input id="editServiceLate" type="number" min="0" required />
+        <label>
+          <span data-i18n="admin.late">Precio después de 6 p. m.</span>
+          <span class="money-input">
+            <span class="money-prefix" aria-hidden="true">RD$</span>
+            <input id="editServiceLate" type="text" inputmode="numeric" autocomplete="off" required />
+          </span>
         </label>
-        <label>Duración (minutos)
-          <input id="editServiceDuration" type="number" min="5" required />
-        </label>
-        <label class="checkbox">
-          <input id="editServiceSpecialist" type="checkbox" />
-          <span>Requiere brillador/pulidor</span>
-        </label>
-        <button type="submit" class="primary btn-lg">Guardar cambios</button>
+        <div class="field-stack">
+          <label>
+            <span data-i18n="admin.duration">Duración</span>
+            <div class="duration-field">
+              <input type="hidden" id="editServiceDuration" value="45" required />
+              <button type="button" class="duration-trigger" id="editServiceDurationBtn" data-duration-for="editServiceDuration" aria-haspopup="dialog">
+                <span class="duration-display" id="editServiceDurationLabel">0h 45m</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </label>
+          <label class="check-chip">
+            <input id="editServiceSpecialist" type="checkbox" />
+            <span class="check-chip-box" aria-hidden="true"></span>
+            <span class="check-chip-text" data-i18n="admin.needsSpecialist">Requiere brillador/pulidor</span>
+          </label>
+        </div>
+        <button type="submit" class="primary btn-lg" data-i18n="modal.save">Guardar cambios</button>
       </form>
     </div>
   </div>
@@ -306,6 +692,6 @@
   </footer>
   </div>
 
-  <script src="app.js"></script>
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

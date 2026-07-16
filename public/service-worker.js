@@ -1,9 +1,8 @@
-const CACHE = "rr-autodetailing-v4";
-const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.json", "./assets/rr-logo.png", "./assets/rr-background.jpeg"];
+const CACHE = "rr-autodetailing-v5";
 
 self.addEventListener("install", (e) => {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)));
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(["/", "/index.html", "/manifest.json"])));
 });
 
 self.addEventListener("activate", (e) => {
@@ -23,6 +22,6 @@ self.addEventListener("fetch", (e) => {
         caches.open(CACHE).then((c) => c.put(e.request, copy));
         return res;
       })
-      .catch(() => caches.match(e.request).then((r) => r || caches.match("./index.html")))
+      .catch(() => caches.match(e.request).then((r) => r || caches.match("/index.html")))
   );
 });
